@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UserDao">
+
+    <sql id="columns">
+          id,username,password,profession,phone,email,sex,created_by,updated_by
+    </sql>
+
+    <resultMap id="UserPO" type="com.example.demo.po.UserPO">
+        <id column="id" property="id"/>
+        <id column="username" property="username"/>
+        <id column="password" property="password"/>
+        <id column="profession" property="profession"/>
+        <id column="phone" property="phone"/>
+        <id column="email" property="email"/>
+        <id column="sex" property="sex"/>
+        <id column="created_by" property="createdBy"/>
+        <id column="updated_by" property="updatedBy"/>
+    </resultMap>
+
+
+
+    <insert id="insertUser"
+            keyProperty="id">
+        INSERT INTO user
+        <set>
+            <if test="username != null">username=#{username},</if>
+            <if test="password != null">password=#{password},</if>
+            <if test="phone != null">phone=#{phone},</if>
+            <if test="profession != null">profession=#{profession},</if>
+            <if test="email != null">email=#{email},</if>
+            <if test="sex != null">sex=#{sex},</if>
+            <if test="created_by != null ">created_by=#{createdBy},</if>
+            <if test="updated_by != null ">updated_by=#{updatedBy},</if>
+        </set>
+    </insert>
+
+    <update id="updateUser">
+        update user
+        <set>
+            <if test="username != null">username=#{username},</if>
+            <if test="password != null">password=#{password},</if>
+            <if test="phone != null">phone=#{phone},</if>
+            <if test="profession != null">profession=#{profession},</if>
+            <if test="email != null">email=#{email},</if>
+            <if test="sex != null">sex=#{sex},</if>
+            <if test="created_by != null ">created_by=#{createdBy},</if>
+            <if test="updated_by != null ">updated_by=#{updatedBy},</if>
+        </set>
+        where
+        <trim prefix="" suffixOverrides="AND">
+            <if test=" id != null  ">id = #{id} AND</if>
+        </trim>
+    </update>
+
+    <select id="findOneUser" resultMap="UserPO">
+        SELECT
+        <include refid="columns"/>
+        FROM user WHERE
+        <trim prefix="" suffixOverrides="AND">
+            <if test="id != null ">id = #{id} AND</if>
+        </trim>
+        ORDER BY id ASC limit 1
+    </select>
+
+    <select id="findAllUser" resultMap="UserPO">
+        SELECT <include refid="columns"/>
+        FROM  user
+        <trim prefix="" suffixOverrides="AND">
+        </trim>
+        ORDER BY id ASC
+    </select>
+</mapper>
